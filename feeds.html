@@ -84,42 +84,10 @@
             </div>
         </div>
         <script src="https://connect.facebook.net/en_US/sdk.js"></script>
-        <script>
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId      : '3475060369381949',
-                    xfbml      : true,
-                    version    : 'v12.0',
-                    accessToken : 'EAAxYjIrj2j0BAIpZCDbS9CNMimAZAeDt7nP3As5pqQzuijPNyCtZCnpIOQztdPMyPhOqwK5CU32VXZBJIAztKoVmYEwX7qyOpKQU2XwI7HfkaSyFiZAd7fCQiZALQyTVvgknzZAJrgQ8lhXuCE8erfZAm6b6ZB0bPHofDZApZAnb3ZCcDG53LjcC5rdsuI52QqPdcJKWhXK51XJWxgZDZD'
-                });
-                FB.api('/me/posts', function(response) {
-                    if(response && !response.error) {
-                        var posts = response.data;
-                        var postList = document.createElement('ul');
-                        for(var i=0; i<posts.length; i++) {
-                            var post = posts[i];
-                            var message = post.message;
-                            var created_time = post.created_time;
-                            
-                            var postItem = document.createElement('li');
-                            postItem.textContent = message + ' - ' + created_time;
-                            postList.appendChild(postItem);
-                        }
-                        document.getElementById('fb-posts').appendChild(postList);
-                    }
-                });
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId=734739084772628&autoLogAppEvents=1" nonce="lFiG9VU2"></script>
 
-            };
-            
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "https://connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
-        <div id="fb-posts"></div>
+        <div class="fb-post" data-href="https://www.facebook.com/photo/?fbid=158462510445552&amp;set=a.158462590445544" data-width="500" data-show-text="true"><blockquote cite="https://www.facebook.com/permalink.php?story_fbid=158462593778877&amp;id=100088454124667" class="fb-xfbml-parse-ignore">Posted by <a href="https://www.facebook.com/people/Temesgen-Besha/100088454124667/">Temesgen Besha</a> on&nbsp;<a href="https://www.facebook.com/permalink.php?story_fbid=158462593778877&amp;id=100088454124667">Tuesday, March 21, 2023</a></blockquote></div>
 
     </section> <!-- end page-header -->
 
