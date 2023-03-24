@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "nav-about": "ማንነታችን",
           "nav-events": "ክስተቶች",
           "nav-contact": "ግንኙነት",
+          "nav-donate": "መባ",
           "hero-title": "እኛ የምንኖርበት እግዚአብሔርን አክብርና ደቀ መዛሙርት እናፍቅር",
           "hero-social-title": "ይከታተሉን"
 

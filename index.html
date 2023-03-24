@@ -64,10 +64,12 @@
         <nav class="header-nav-wrap">
             <ul class="header-nav">
               <li class="current"><a href="index.html" title="Home" data-lang-key="nav-home">Home</a></li>
-              <li><a href="events.html" title="Services" data-lang-key="nav-events">Events</a></li>
+              <!-- <li><a href="events.html" title="Services" data-lang-key="nav-events">Events</a></li> -->
               <li><a href="feeds.html" title="Feeds" data-lang-key="nav-feeds">Feeds</a></li>
               <li><a href="about.html" title="About" data-lang-key="nav-about">About</a></li>
               <li><a href="contact.html" title="Contact us" data-lang-key="nav-contact">Contact</a></li>
+              <li><a href="donate.html" title="Donate" data-lang-key="nav-donate">DONATE</a></li>
+
             </ul>
           </nav>
 
@@ -197,9 +199,10 @@
                 <a data-lang-key="connect-content2" href="volunteer.html" class="btn btn--primary h-full-width">I'm Interested</a>
             </div>
             <div class="column large-half tab-full">
-                <h3 data-lang-key="connect-content3" class="display-1">Join a Connect Group.</h3>
+                <h3 data-lang-key="connect-content3" class="display-1">ORTHODOX TEWAHEDO RESOURCES
+                </h3>
                 <p data-lang-key="connect-content4">
-                Officia earum at quia 
+                Here is where we learn and ask questions about our Religion and our Church.
                 </p>
 
                 <a data-lang-key="connect-content5" href="connect-group.html" class="btn btn--primary h-full-width">Learn More</a>
@@ -211,65 +214,7 @@
 
 
     
-    <!-- events
-    ================================================== -->
-    <section class="s-events">
-
-        <div class="row events-header">
-            <div class="column">
-                <h2 data-lang-key="events-header"class="subhead">Upcoming Events.</h2>
-            </div>
-        </div> <!-- end event-header -->
-    
-        <div class="row block-large-1-2 block-900-full events-list">
-            <!-- Google Calendar events will be added dynamically here -->
-        </div> <!-- end events-list -->
-    
-    </section> <!-- end s-events -->
-    
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script>
-        gapi.load('client', function() {
-            gapi.client.init({
-                apiKey: 'AIzaSyCBuLBBq_dvcyjV6GDQD4eZVlFgnzbgS_s',
-                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-            }).then(function() {
-                return gapi.client.calendar.events.list({
-                    'calendarId': 'temu893@gmail.com',
-                    'timeMin': new Date().toISOString(),
-                    'showDeleted': false,
-                    'singleEvents': true,
-                    'orderBy': 'startTime'
-                });
-            }).then(function(response) {
-                var events = response.result.items.slice(0, 5); // only get the first 5 events
-                var eventsList = document.querySelector('.events-list');
-                eventsList.innerHTML = '';
-                if (events.length > 0) {
-                    events.forEach(function(event) {
-                        var eventItem = document.createElement('div');
-                        eventItem.classList.add('column', 'events-list__item');
-                        eventItem.innerHTML = `
-                            <h3 class="display-1 events-list__item-title">
-                                <a href="${event.htmlLink}" target="_blank">${event.summary}</a>
-                            </h3>
-                            <p>${event.description || ''}</p>
-                            <ul class="events-list__meta">
-                                <li class="events-list__meta-date">${new Date(event.start.dateTime).toLocaleDateString()}</li>
-                                <li class="events-list__meta-time">${new Date(event.start.dateTime).toLocaleTimeString()} - ${new Date(event.end.dateTime).toLocaleTimeString()}</li>
-                                <li class="events-list__meta-location">${event.location || ''}</li>
-                            </ul>`;
-                        eventsList.appendChild(eventItem);
-                    });
-                } else {
-                    eventsList.innerHTML = 'No upcoming events found.';
-                }
-            }, function(reason) {
-                console.log('Error: ' + reason.result.error.message);
-            });
-        });
-    </script>
-    
+   
 
     <!-- series
     ================================================== -->
@@ -295,14 +240,14 @@
 
                 <div class="series-content__subscribe">
                     <p data-lang-key="content__subscribe">
-                    Never missed a message. Subscribe to our YouTube and Podcast channels.
+                    Never missed KIDASE and all church Services. Subscribe to our YouTube.
                     </p>
                     
                     <ul class="series-content__subscribe-links">
-                        <li data-lang-key="subscribe-link1" class="ss-apple-podcast"><a href="#0">Apple Podcast</a></li>
+                        <!-- <li data-lang-key="subscribe-link1" class="ss-apple-podcast"><a href="#0">Apple Podcast</a></li>
                         <li data-lang-key="subscribe-link2" class="ss-spotify"><a href="#0">Spotify</a></li>
-                        <li data-lang-key="subscribe-link3" class="ss-soundcloud"><a href="#0">SoundCloud</a></li>
-                        <li data-lang-key="subscribe-link4" class="ss-youtube"><a href="#0">Youtube</a></li>
+                        <li data-lang-key="subscribe-link3" class="ss-soundcloud"><a href="#0">SoundCloud</a></li> -->
+                        <li data-lang-key="subscribe-link4" class="ss-youtube"><a href="https://www.youtube.com/@Ourael/streams">Youtube</a></li>
                     </ul>
                 </div>
             </div> <!-- end column -->
@@ -328,13 +273,13 @@
                     <li class="social-list__item">
                         <a href="#0" title="">
                             <span class="social-list__icon social-list__icon--twitter"></span>
-                            <span class="social-list__text">Twitter</span>
+                            <span class="social-list__text">Viber</span>
                         </a>
                     </li>
                     <li class="social-list__item">
                         <a href="#0" title="">
                             <span class="social-list__icon social-list__icon--instagram"></span>
-                            <span class="social-list__text">Instagram</span>
+                            <span class="social-list__text">YouTube</span>
                         </a>
                     </li>
                     <li class="social-list__item">
@@ -378,7 +323,7 @@
 
         
                         <p>
-                        <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get Direction</a>
+                        <a href="https://goo.gl/maps/sgfYbknwE26wPgEK8" target="_blank" class="btn btn--footer">Get Direction</a>
                         </p>
                     </div>
                     <div class="column large-5 medium-full">
