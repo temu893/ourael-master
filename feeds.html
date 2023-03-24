@@ -29,42 +29,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
 
-	<script src="https://connect.facebook.net/en_US/sdk.js"></script>
-	<script>
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '3475060369381949',
-				xfbml      : true,
-				version    : 'v12.0',
-				accessToken : 'EAAxYjIrj2j0BAIs0C4ZBGEqpY9eZAi8DTmAhn2cnOBNRHaXq5dUZAZCLBuxxCDQBUQlvZCM9WkEW6pzsbfP16pYHQXfCMZBAMObPZBCSyiO4GWyfDW8YM2fbzOZB6jd8OP0DrKPKiCXRVAvucRRpwSHAtzu6L71bX6ZCD72IbpTr55soZBGr09OwpYWpBVsV9wEgwdiXS9DnF3KiLnuUnfs4flik0eJBpEy5BLTgkBiewAwZBRvUJmH7GIC'
-			});
-            FB.api('/me/posts', function(response) {
-                if(response && !response.error) {
-                    var posts = response.data;
-                    var postList = document.createElement('ul');
-                    for(var i=0; i<posts.length; i++) {
-                        var post = posts[i];
-                        var message = post.message;
-                        var created_time = post.created_time;
-                        
-                        var postItem = document.createElement('li');
-                        postItem.textContent = message + ' - ' + created_time;
-                        postList.appendChild(postItem);
-                    }
-                    document.getElementById('fb-posts').appendChild(postList);
-                }
-            });
 
-		};
-		
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = "https://connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-	</script>
 
 </head>
 
@@ -85,7 +50,6 @@
     ================================================== -->
     <header class="s-header">
 
-        <div id="fb-posts"></div>
 
 
         <div class="header-logo">
@@ -106,7 +70,45 @@
 
         <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
 
+        <div id="fb-posts"></div>
 
+
+        <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '3475060369381949',
+                    xfbml      : true,
+                    version    : 'v12.0',
+                    accessToken : 'EAAxYjIrj2j0BAIs0C4ZBGEqpY9eZAi8DTmAhn2cnOBNRHaXq5dUZAZCLBuxxCDQBUQlvZCM9WkEW6pzsbfP16pYHQXfCMZBAMObPZBCSyiO4GWyfDW8YM2fbzOZB6jd8OP0DrKPKiCXRVAvucRRpwSHAtzu6L71bX6ZCD72IbpTr55soZBGr09OwpYWpBVsV9wEgwdiXS9DnF3KiLnuUnfs4flik0eJBpEy5BLTgkBiewAwZBRvUJmH7GIC'
+                });
+                FB.api('/me/posts', function(response) {
+                    if(response && !response.error) {
+                        var posts = response.data;
+                        var postList = document.createElement('ul');
+                        for(var i=0; i<posts.length; i++) {
+                            var post = posts[i];
+                            var message = post.message;
+                            var created_time = post.created_time;
+                            
+                            var postItem = document.createElement('li');
+                            postItem.textContent = message + ' - ' + created_time;
+                            postList.appendChild(postItem);
+                        }
+                        document.getElementById('fb-posts').appendChild(postList);
+                    }
+                });
+    
+            };
+            
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
     </header> <!-- end s-header -->
 
 
