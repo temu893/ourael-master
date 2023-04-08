@@ -24,8 +24,7 @@
     <script src="js/modernizr.js"></script>
     <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.9.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.5.1/browser/azure-storage-blob.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.4.1/browser/azure-storage.blob.min.js"></script>
+
 
 
 
@@ -143,12 +142,17 @@
                     <div class="column large-7 medium-full">
                         <p>
                             <button id="signInBtn">Sign In</button>
+                        </p>
                         <div id="images-container"></div>
                         <input type="file" id="image-upload" style="display: none" />
-                        <button id="upload-image-btn" onclick="document.getElementById('image-upload').click();">Upload
-                            Image</button>
-                        <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get
-                            Direction</a>
+                        <p>
+                            <button id="upload-image-btn" onclick="document.getElementById('image-upload').click();"
+                                style="display: none">Upload
+                                Image</button>
+                            <button id="delete-image-btn" onclick="deleteSelectedImage();" style="display: none">Delete
+                                Image</button>
+                            <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get
+                                Direction</a>
                         </p>
                     </div>
 
@@ -207,21 +211,6 @@
 
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
-            // function signIn() {
-            //     console.log("signIn called");
-            //     const loginRequest = {
-            //         scopes: ['User.Read'],
-            //     };
-
-            //     msalInstance.loginPopup(loginRequest).then((response) => {
-            //         const account = msalInstance.getActiveAccount();
-            //         if (account && accountEmails.includes(account.username)) {
-            //             // Show upload and delete buttons
-            //         } else {
-            //             alert('You are not authorized to upload or delete images.');
-            //         }
-            //     });
-            // }
             function signIn() {
                 console.log("signIn called");
                 const loginRequest = {
@@ -229,7 +218,6 @@
                 };
                 msalInstance.loginRedirect(loginRequest);
             }
-
 
             document.getElementById("signInBtn").addEventListener("click", signIn);
 
@@ -239,6 +227,22 @@
 
             const blobServiceClient = new azure.storage.BlobServiceClient.fromConnectionString(connectionString);
             const containerClient = blobServiceClient.getContainerClient(containerName);
+
+            // Add authorized email addresses here
+            const accountEmails = [
+                "authorized.email@example.com",
+                "another.authorized.email@example.com",
+            ];
+
+            let selectedBlobName = null;
+
+            function getSelectedBlobName() {
+                return selectedBlobName;
+            }
+
+            function setSelectedBlobName(blobName) {
+                selectedBlobName = blobName;
+            }
 
             async function listAndDisplayImages() {
                 let imagesContainer = document.getElementById("images-container");
@@ -251,6 +255,9 @@
                     let imgElement = document.createElement("img");
                     imgElement.src = blobUrl;
                     imgElement.className = "gallery-image";
+                    imgElement.onclick = function () {
+                        setSelectedBlobName(blob.name);
+                    };
                     imagesContainer.appendChild(imgElement);
                 }
             }
@@ -264,11 +271,18 @@
                 listAndDisplayImages(); // Refresh the image list after uploading
             }
 
-            async function deleteImage(blobName) {
+            async function deleteSelectedImage() {
+                const blobName = getSelectedBlobName();
+                if (!blobName) {
+                    alert("No image selected for deletion");
+                    return;
+                }
+
                 const blobClient = containerClient.getBlobClient(blobName);
                 await blobClient.delete({
                     sasToken: sasToken,
                 });
+                setSelectedBlobName(null); // Reset selected blob name after deletion
                 listAndDisplayImages(); // Refresh the image list after deletion
             }
 
@@ -279,7 +293,39 @@
                 }
             });
 
+            // Add a new button for image deletion
+            const deleteImageBtn = document.createElement("button");
+            deleteImageBtn.id = "delete-image-btn";
+            deleteImageBtn.textContent = "Delete Image";
+            deleteImageBtn.addEventListener("click", deleteSelectedImage);
+            document.querySelector(".column.large-7.medium-full > p").appendChild(deleteImageBtn);
+
+            // Check if the user is authorized to delete images
+            msalInstance.addEventCallback((message, instance) => {
+                if (message.eventType === msal.EventType.LOGIN_SUCCESS) {
+                    const account = instance.getAllAccounts()[0];
+                    if (accountEmails.includes(account.username)) {
+                        deleteImageBtn.style.display = "inline-block";
+                    } else {
+                        deleteImageBtn.style.display = "none";
+                    }
+                }
+            });
+
             listAndDisplayImages();
         });
     </script>
+
+
 </body>
+
+
+
+
+using only html css and js , update the below website page with the following features
+
+1. add a login button to the page and if the user email is in our list of emails then he can upload and delete images
+however if the user email is not in our list of emails then he can only view the images
+2. the update and delete button should only be visible to the user who have the email in our list of emails
+3. and the upload images and the delete images need to be reflected in the gallery page and update the Azure storage
+account with the new images and delete the images from the Azure storage account
