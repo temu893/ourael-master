@@ -190,9 +190,9 @@
         document.addEventListener("DOMContentLoaded", function () {
             const msalConfig = {
                 auth: {
-                    clientId: 'YOUR_APP_CLIENT_ID',
-                    authority: 'https://login.microsoftonline.com/YOUR_DIRECTORY_TENANT_ID',
-                    redirectUri: 'YOUR_APP_REDIRECT_URL',
+                    clientId: '8e78f9a8-ae56-47f8-bf53-e1c2fa71cbb7',
+                    authority: 'https://login.microsoftonline.com/7c586bdb-d4f1-47f5-bfcd-4fbdcf398d7f',
+                    redirectUri: 'https://happy-sea-0c6b45f10.2.azurestaticapps.net/gallery.html',
                 },
                 cache: {
                     cacheLocation: 'localStorage',
@@ -223,8 +223,8 @@
 
             // Continue with Azure Blob Storage interaction (upload, delete, and display images)
 
-            const connectionString = "YOUR_CONNECTION_STRING";
-            const containerName = "YOUR_CONTAINER_NAME";
+            const connectionString = "DefaultEndpointsProtocol=https;AccountName=ouraelsa;AccountKey=nFjGB5WRDu6PbO7KpLHKUZiZPli+CKXDoKEq9kGiiS4hAvr/Rt9YJMfUXoPhwnEMO/+CWCtyojhN+ASt5Li8CQ==;EndpointSuffix=core.windows.net";
+            const containerName = "ouraelcont";
 
             const blobServiceClient = new azure.storage.BlobServiceClient.fromConnectionString(connectionString);
             const containerClient = blobServiceClient.getContainerClient(containerName);
