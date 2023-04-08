@@ -24,6 +24,8 @@
     <script src="js/modernizr.js"></script>
     <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.5.1/browser/azure-storage-blob.min.js"></script>
+
 
 
     <!-- favicons
@@ -203,21 +205,30 @@
 
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
+            // function signIn() {
+            //     console.log("signIn called");
+            //     const loginRequest = {
+            //         scopes: ['User.Read'],
+            //     };
+
+            //     msalInstance.loginPopup(loginRequest).then((response) => {
+            //         const account = msalInstance.getActiveAccount();
+            //         if (account && accountEmails.includes(account.username)) {
+            //             // Show upload and delete buttons
+            //         } else {
+            //             alert('You are not authorized to upload or delete images.');
+            //         }
+            //     });
+            // }
             function signIn() {
                 console.log("signIn called");
                 const loginRequest = {
                     scopes: ['User.Read'],
                 };
 
-                msalInstance.loginPopup(loginRequest).then((response) => {
-                    const account = msalInstance.getActiveAccount();
-                    if (account && accountEmails.includes(account.username)) {
-                        // Show upload and delete buttons
-                    } else {
-                        alert('You are not authorized to upload or delete images.');
-                    }
-                });
+                msalInstance.loginRedirect(loginRequest);
             }
+
 
             document.getElementById("signInBtn").addEventListener("click", signIn);
 
@@ -261,13 +272,13 @@
             }
 
             document.getElementById("image-upload").addEventListener("change", function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                uploadImage(file);
-            }
-        });
+                const file = e.target.files[0];
+                if (file) {
+                    uploadImage(file);
+                }
+            });
 
-        listAndDisplayImages();
-    });
-</script>
+            listAndDisplayImages();
+        });
+    </script>
 </body>
