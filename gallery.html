@@ -261,11 +261,13 @@
             }
 
             document.getElementById("image-upload").addEventListener("change", function (e) {
-                const file = e.target.files[0];
-                if (file) {
-                    uploadImage(file);
-                }
-            });
+            const file = e.target.files[0];
+            if (file) {
+                uploadImage(file);
+            }
         });
-    </script>
+
+        listAndDisplayImages();
+    });
+</script>
 </body>
