@@ -50,7 +50,7 @@
     </div>
 
 
-    
+
     <!-- header
     ================================================== -->
     <header class="s-header">
@@ -140,7 +140,7 @@
                 <div class="row">
                     <div class="column large-7 medium-full">
                         <p>
-                            <button id="signInBtn" onclick="signIn()">Sign In</button>
+                            <button id="signInBtn">Sign In</button>
                         <div id="images-container"></div>
                         <input type="file" id="image-upload" style="display: none" />
                         <button id="upload-image-btn" onclick="document.getElementById('image-upload').click();">Upload
@@ -149,6 +149,7 @@
                             Direction</a>
                         </p>
                     </div>
+
                     <div class="column large-5 medium-full">
                         <h4 class="h6">Quick Links</h4>
                         <ul class="footer-list">
@@ -203,8 +204,6 @@
 
             // Rest of the JavaScript code
 
-            const accountEmails = ['authorized@example.com']; // List of authorized email addresses
-
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
             function signIn() {
@@ -222,7 +221,9 @@
                 });
             }
 
-            // Continue with Azure Blob Storage interaction (upload, delete, and display images)
+            document.getElementById("signInBtn").addEventListener("click", signIn);
+
+
 
             const connectionString = "DefaultEndpointsProtocol=https;AccountName=ouraelsa;AccountKey=nFjGB5WRDu6PbO7KpLHKUZiZPli+CKXDoKEq9kGiiS4hAvr/Rt9YJMfUXoPhwnEMO/+CWCtyojhN+ASt5Li8CQ==;EndpointSuffix=core.windows.net";
             const containerName = "ouraelcont";
