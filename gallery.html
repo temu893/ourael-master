@@ -22,6 +22,11 @@
     <!-- script
     ================================================== -->
     <script src="js/modernizr.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"
+        integrity="sha384-8Tg9A9AaofFU3G0iP8AqebOA2tpPuaZTRvxmeFaa1grgizrBnXGp/9I7jJlBhuic"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.9.0"></script>
+
 
     <!-- favicons
     ================================================== -->
@@ -29,8 +34,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
-
-
 
 </head>
 
@@ -74,8 +77,6 @@
         <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
 
     </header> <!-- end s-header -->
-
-
 
     <!-- Social
     ================================================== -->
@@ -137,16 +138,14 @@
             <div class="column large-half tab-full">
                 <div class="row">
                     <div class="column large-7 medium-full">
-                        <h4 class="h6">Our Location</h4>
                         <p>
-                            1600 Amphitheatre Parkway <br>
-                            Mountain View, California <br>
-                            94043 US
-                        </p>
-
-                        <p>
-                            <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get
-                                Direction</a>
+                            <button id="signInBtn" onclick="signIn()">Sign In</button>
+                        <div id="images-container"></div>
+                        <input type="file" id="image-upload" style="display: none" />
+                        <button id="upload-image-btn" onclick="document.getElementById('image-upload').click();">Upload
+                            Image</button>
+                        <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get
+                            Direction</a>
                         </p>
                     </div>
                     <div class="column large-5 medium-full">
@@ -166,7 +165,7 @@
 
         <div class="row footer-bottom">
             <div class="column ss-copyright">
-                <span>© Copyright Uriel EOTC 2023</span> 
+                <span>© Copyright Uriel EOTC 2023</span>
                 <!-- <span>Design by <a href="https://www.styleshout.com/">StyleShout</a></span> -->
             </div>
         </div> <!-- footer-bottom -->
@@ -187,5 +186,83 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const msalConfig = {
+                auth: {
+                    clientId: 'YOUR_APP_CLIENT_ID',
+                    authority: 'https://login.microsoftonline.com/YOUR_DIRECTORY_TENANT_ID',
+                    redirectUri: 'YOUR_APP_REDIRECT_URL',
+                },
+                cache: {
+                    cacheLocation: 'localStorage',
+                    storeAuthStateInCookie: false,
+                },
+            };
 
+            // Rest of the JavaScript code
+
+            const accountEmails = ['authorized@example.com']; // List of authorized email addresses
+
+            const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+            function signIn() {
+                const loginRequest = {
+                    scopes: ['User.Read'],
+                };
+
+                msalInstance.loginPopup(loginRequest).then((response) => {
+                    const account = msalInstance.getActiveAccount();
+                    if (account && accountEmails.includes(account.username)) {
+                        // Show upload and delete buttons
+                    } else {
+                        alert('You are not authorized to upload or delete images.');
+                    }
+                });
+            }
+
+            // Continue with Azure Blob Storage interaction (upload, delete, and display images)
+
+            const connectionString = "YOUR_CONNECTION_STRING";
+            const containerName = "YOUR_CONTAINER_NAME";
+
+            const blobServiceClient = new azure.storage.BlobServiceClient.fromConnectionString(connectionString);
+            const containerClient = blobServiceClient.getContainerClient(containerName);
+
+            async function listAndDisplayImages() {
+                let imagesContainer = document.getElementById("images-container");
+                imagesContainer.innerHTML = "";
+
+                let blobs = containerClient.listBlobsFlat();
+                for await (const blob of blobs) {
+                    let blobUrl = containerClient.getBlobClient(blob.name).url;
+
+                    let imgElement = document.createElement("img");
+                    imgElement.src = blobUrl;
+                    imgElement.className = "gallery-image";
+                    imagesContainer.appendChild(imgElement);
+                }
+            }
+
+            async function uploadImage(file) {
+                const blobName = "images/" + new Date().getTime() + "_" + file.name;
+                const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+                await blockBlobClient.uploadData(file);
+                listAndDisplayImages(); // Refresh the image list after uploading
+            }
+
+            async function deleteImage(blobName) {
+                const blobClient = containerClient.getBlobClient(blobName);
+                await blobClient.delete();
+                listAndDisplayImages(); // Refresh the image list after deletion
+            }
+
+            document.getElementById("image-upload").addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    uploadImage(file);
+                }
+            });
+        });
+    </script>
 </body>
