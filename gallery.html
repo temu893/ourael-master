@@ -22,9 +22,7 @@
     <!-- script
     ================================================== -->
     <script src="js/modernizr.js"></script>
-    <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"
-        integrity="sha384-8Tg9A9AaofFU3G0iP8AqebOA2tpPuaZTRvxmeFaa1grgizrBnXGp/9I7jJlBhuic"
-        crossorigin="anonymous"></script>
+    <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.9.0"></script>
 
 
@@ -190,6 +188,7 @@
     <script src="js/main.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            console.log("DOMContentLoaded");
             const msalConfig = {
                 auth: {
                     clientId: '8e78f9a8-ae56-47f8-bf53-e1c2fa71cbb7',
@@ -207,6 +206,7 @@
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
             function signIn() {
+                console.log("signIn called");
                 const loginRequest = {
                     scopes: ['User.Read'],
                 };
