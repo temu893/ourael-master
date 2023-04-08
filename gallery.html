@@ -201,8 +201,6 @@
                 },
             };
 
-            // Rest of the JavaScript code
-
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
             function signIn() {
@@ -223,10 +221,9 @@
 
             document.getElementById("signInBtn").addEventListener("click", signIn);
 
-
-
             const connectionString = "DefaultEndpointsProtocol=https;AccountName=ouraelsa;AccountKey=nFjGB5WRDu6PbO7KpLHKUZiZPli+CKXDoKEq9kGiiS4hAvr/Rt9YJMfUXoPhwnEMO/+CWCtyojhN+ASt5Li8CQ==;EndpointSuffix=core.windows.net";
             const containerName = "ouraelcont";
+            const sasToken = "https://ouraelsa.blob.core.windows.net/?sv=2021-12-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-04-08T09:59:38Z&st=2023-04-08T01:59:38Z&spr=https,http&sig=lZMHrnTBP474DKL8g1r7g1KEvfIS1Mw6WXhgzTEh59c%3D";
 
             const blobServiceClient = new azure.storage.BlobServiceClient.fromConnectionString(connectionString);
             const containerClient = blobServiceClient.getContainerClient(containerName);
@@ -237,7 +234,7 @@
 
                 let blobs = containerClient.listBlobsFlat();
                 for await (const blob of blobs) {
-                    let blobUrl = containerClient.getBlobClient(blob.name).url;
+                    let blobUrl = containerClient.getBlobClient(blob.name).url + sasToken;
 
                     let imgElement = document.createElement("img");
                     imgElement.src = blobUrl;
@@ -249,13 +246,17 @@
             async function uploadImage(file) {
                 const blobName = "images/" + new Date().getTime() + "_" + file.name;
                 const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-                await blockBlobClient.uploadData(file);
+                await blockBlobClient.uploadData(file, {
+                    sasToken: sasToken,
+                });
                 listAndDisplayImages(); // Refresh the image list after uploading
             }
 
             async function deleteImage(blobName) {
                 const blobClient = containerClient.getBlobClient(blobName);
-                await blobClient.delete();
+                await blobClient.delete({
+                    sasToken: sasToken,
+                });
                 listAndDisplayImages(); // Refresh the image list after deletion
             }
 
