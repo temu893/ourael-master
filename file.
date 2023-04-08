@@ -1,96 +1,29 @@
-under this /Users/temesgenbesha/Desktop/ourael-master/ folder i have this files and folder and this website is up and running in the Azure Static Web App
 
-.github/workflows
-css
-images
-js
+using only html css and js , update the below website page with the following features
 
-about.html
+1. add a button to upload and delete an image to the gallery
+2. this functionality should desplay the chnages in the gallery page also should update our Azure container with the new image and deleted one 
 
-connect-group.html
+note: you don't have to rewrite the whole code agian just write the part of the code where you make chnages 
 
-contact.html
-
-donate.html
-
-events-single.html
-events.html
-feeds.html
-gallery.html
-index.html
-
-readme.txt
-
-here is what is my gallery.html looks like 
-I want to update this gallery to have a functiionalities 
-1. to store the pitures in Azure blob 
-2. to allow only specific person with specific email to be able to upload and delete pictures form the website
-3. if the user did't have the specific email they can only view the pictures in the gallery 
-4. so that in the gallery page we will have sign in button in the top right of the page then if the user put the correct email with password then all the apload and delete functionalities will appier for them 
-
-
-/Users/temesgenbesha/Desktop/ourael-master/gallery.html
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
 <head>
 
-    <!--- basic page needs
-    ================================================== -->
-    <meta charset="utf-8">
-    <title>Uriel EOTC - About</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- mobile specific metas
-    ================================================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSS
-    ================================================== -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/main.css">
-
     <!-- script
     ================================================== -->
     <script src="js/modernizr.js"></script>
-
-    <!-- favicons
-    ================================================== -->
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
-
-
+    <script src="https://alcdn.msauth.net/browser/2.20.0/js/msal-browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@azure/storage-blob@12.9.0"></script>
 
 </head>
 
 <body id="top">
 
-    <!-- preloader
-    ================================================== -->
-    <div id="preloader">
-        <div id="loader" class="dots-jump">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-
-
     <!-- header
     ================================================== -->
     <header class="s-header">
-
-
-
-        <div class="header-logo">
-            <a class="site-logo" href="index.html">
-                <img src="images/logo.png" alt="Homepage">
-            </a>
-        </div>
-
         <nav class="header-nav-wrap">
             <ul class="header-nav">
                 <li class="current"><a href="index.html" title="Home" data-lang-key="nav-home">Home</a></li>
@@ -107,107 +40,35 @@ I want to update this gallery to have a functiionalities
 
     </header> <!-- end s-header -->
 
-    <!-- Social
-    ================================================== -->
-    <section class="s-social">
-        <div id="fb-root"></div>
-
-
-        <div class="row social-content">
-            <div class="column">
-                <ul class="social-list">
-                    <li class="social-list__item">
-                        <a href="#0" title="">
-                            <span class="social-list__icon social-list__icon--facebook"></span>
-                            <span class="social-list__text">Facebook</span>
-                        </a>
-                    </li>
-                    <li class="social-list__item">
-                        <a href="#0" title="">
-                            <span class="social-list__icon social-list__icon--twitter"></span>
-                            <span class="social-list__text">Twitter</span>
-                        </a>
-                    </li>
-                    <li class="social-list__item">
-                        <a href="#0" title="">
-                            <span class="social-list__icon social-list__icon--instagram"></span>
-                            <span class="social-list__text">Instagram</span>
-                        </a>
-                    </li>
-                    <li class="social-list__item">
-                        <a href="#0" title="">
-                            <span class="social-list__icon social-list__icon--email"></span>
-                            <span class="social-list__text">Email</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div> <!-- end social-content -->
-
-    </section> <!-- end s-social -->
-
 
     <!-- footer
     ================================================== -->
     <footer class="s-footer">
 
         <div class="row footer-top">
-            <div class="column large-4 medium-5 tab-full">
-                <div class="footer-logo">
-                    <a class="site-footer-logo" href="index.html">
-                        <img src="images/logo.png" alt="Homepage">
-                    </a>
-                </div> <!-- footer-logo -->
-                <p>
-                    Laborum ad explicabo. Molestiae voluptates est. Quisquam labore tenetur
-                    et assumenda voluptatibus a beatae. Rerum odio ducimus reprehenderit
-                    sit animi laborum nostrum dolorum animi voluptates est voluptatibus a beatae.
-                </p>
-            </div>
+
             <div class="column large-half tab-full">
                 <div class="row">
                     <div class="column large-7 medium-full">
-                        <h4 class="h6">Our Location</h4>
                         <p>
-                            1600 Amphitheatre Parkway <br>
-                            Mountain View, California <br>
-                            94043 US
+                            <input type="email" id="email-input" placeholder="Enter your email" />
+                            <button id="verify-email-btn">Verify Email</button>
                         </p>
-
+                        <div id="images-container"></div>
+                        <input type="file" id="image-upload" style="display: none" />
                         <p>
+                            <button id="upload-image-btn" onclick="document.getElementById('image-upload').click();"
+                                style="display: none">Upload
+                                Image</button>
+                            <button id="delete-image-btn" onclick="deleteSelectedImage();" style="display: none">Delete
+                                Image</button>
                             <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get
                                 Direction</a>
                         </p>
                     </div>
-                    <div class="column large-5 medium-full">
-                        <h4 class="h6">Quick Links</h4>
-                        <ul class="footer-list">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="volunteer.html">Volunteer</a></li>
-                            <li><a href="connect-group.html">Connect Groups</a></li>
-                            <li><a href="events.html">Upcoming Events</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div> <!-- end footer-top -->
-
-        <div class="row footer-bottom">
-            <div class="column ss-copyright">
-                <span>© Copyright Uriel EOTC 2023</span> 
-                <!-- <span>Design by <a href="https://www.styleshout.com/">StyleShout</a></span> -->
-            </div>
-        </div> <!-- footer-bottom -->
-
-        <div class="ss-go-top">
-            <a class="smoothscroll" title="Back to Top" href="#top">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M12 0l8 9h-6v15h-4v-15h-6z" />
-                </svg>
-            </a>
-        </div> <!-- ss-go-top -->
 
     </footer> <!-- end s-footer -->
 
@@ -217,5 +78,103 @@ I want to update this gallery to have a functiionalities
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("DOMContentLoaded");
+            const msalConfig = {
+                auth: {
+                    clientId: '8e78f9a8-ae56-47f8-bf53-e1c2fa71cbb7',
+                    authority: 'https://login.microsoftonline.com/7c586bdb-d4f1-47f5-bfcd-4fbdcf398d7f',
+                    redirectUri: 'https://happy-sea-0c6b45f10.2.azurestaticapps.net/gallery.html',
+                },
+                cache: {
+                    cacheLocation: 'localStorage',
+                    storeAuthStateInCookie: false,
+                },
+            };
+
+            const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+
+
+            const connectionString = "DefaultEndpointsProtocol=https;AccountName=ouraelsa;AccountKey=nFjGB5WRDu6PbO7KpLHKUZiZPli+CKXDoKEq9kGiiS4hAvr/Rt9YJMfUXoPhwnEMO/+CWCtyojhN+ASt5Li8CQ==;EndpointSuffix=core.windows.net";
+            const containerName = "ouraelcont";
+            const sasToken = "https://ouraelsa.blob.core.windows.net/?sv=2021-12-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-04-08T09:59:38Z&st=2023-04-08T01:59:38Z&spr=https,http&sig=lZMHrnTBP474DKL8g1r7g1KEvfIS1Mw6WXhgzTEh59c%3D";
+
+            const blobServiceClient = new azure.storage.BlobServiceClient.fromConnectionString(connectionString);
+            const containerClient = blobServiceClient.getContainerClient(containerName);
+
+
+            let selectedBlobName = null;
+
+            function getSelectedBlobName() {
+                return selectedBlobName;
+            }
+
+            function setSelectedBlobName(blobName) {
+                selectedBlobName = blobName;
+            }
+
+            async function listAndDisplayImages() {
+                let imagesContainer = document.getElementById("images-container");
+                imagesContainer.innerHTML = "";
+
+                let blobs = containerClient.listBlobsFlat();
+                for await (const blob of blobs) {
+                    let blobUrl = containerClient.getBlobClient(blob.name).url + sasToken;
+
+                    let imgElement = document.createElement("img");
+                    imgElement.src = blobUrl;
+                    imgElement.className = "gallery-image";
+                    imgElement.onclick = function () {
+                        setSelectedBlobName(blob.name);
+                    };
+                    imagesContainer.appendChild(imgElement);
+                }
+            }
+
+            async function uploadImage(file) {
+                const blobName = "images/" + new Date().getTime() + "_" + file.name;
+                const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+                await blockBlobClient.uploadData(file, {
+                    sasToken: sasToken,
+                });
+                listAndDisplayImages(); // Refresh the image list after uploading
+            }
+
+            async function deleteSelectedImage() {
+                const blobName = getSelectedBlobName();
+                if (!blobName) {
+                    alert("No image selected for deletion");
+                    return;
+                }
+
+                const blobClient = containerClient.getBlobClient(blobName);
+                await blobClient.delete({
+                    sasToken: sasToken,
+                });
+                setSelectedBlobName(null); // Reset selected blob name after deletion
+                listAndDisplayImages(); // Refresh the image list after deletion
+            }
+
+            document.getElementById("image-upload").addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    uploadImage(file);
+                }
+            });
+
+            // Add a new button for image deletion
+            const deleteImageBtn = document.createElement("button");
+            deleteImageBtn.id = "delete-image-btn";
+            deleteImageBtn.textContent = "Delete Image";
+            deleteImageBtn.addEventListener("click", deleteSelectedImage);
+            document.querySelector(".column.large-7.medium-full > p").appendChild(deleteImageBtn);
+
+
+            listAndDisplayImages();
+        });
+    </script>
+
 
 </body>

@@ -147,11 +147,12 @@
                         <div id="images-container"></div>
                         <input type="file" id="image-upload" style="display: none" />
                         <p>
-                            <button id="upload-image-btn" onclick="document.getElementById('image-upload').click();"
-                                style="display: none">Upload
-                                Image</button>
-                            <button id="delete-image-btn" onclick="deleteSelectedImage();" style="display: none">Delete
-                                Image</button>
+                            <button id="upload-image-btn"
+                                onclick="document.getElementById('image-upload').click();">Upload Image</button>
+                            <input type="file" id="image-upload" style="display: none" />
+
+                            <button id="delete-image-btn" onclick="deleteSelectedImage();">Delete Image</button>
+
                             <a href="https://goo.gl/maps/bc7C7eYtSmnNs6216" target="_blank" class="btn btn--footer">Get
                                 Direction</a>
                         </p>
@@ -212,32 +213,7 @@
 
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
-            function signIn() {
-                const email = document.getElementById("email-input").value;
-                if (accountEmails.includes(email)) {
-                    console.log("signIn called");
-                    const loginRequest = {
-                        scopes: ['User.Read'],
-                        loginHint: email,
-                    };
-                    msalInstance.loginRedirect(loginRequest);
-                } else {
-                    alert("You do not have access to upload and delete images.");
-                }
-            }
 
-            document.getElementById("signInBtn").disabled = true;
-            document.getElementById("verify-email-btn").addEventListener("click", function () {
-                const email = document.getElementById("email-input").value;
-                if (accountEmails.includes(email)) {
-                    document.getElementById("signInBtn").disabled = false;
-                } else {
-                    alert("You do not have access to upload and delete images.");
-                }
-            });
-
-
-            document.getElementById("signInBtn").addEventListener("click", signIn);
 
             const connectionString = "DefaultEndpointsProtocol=https;AccountName=ouraelsa;AccountKey=nFjGB5WRDu6PbO7KpLHKUZiZPli+CKXDoKEq9kGiiS4hAvr/Rt9YJMfUXoPhwnEMO/+CWCtyojhN+ASt5Li8CQ==;EndpointSuffix=core.windows.net";
             const containerName = "ouraelcont";
@@ -246,11 +222,6 @@
             const blobServiceClient = new azure.storage.BlobServiceClient.fromConnectionString(connectionString);
             const containerClient = blobServiceClient.getContainerClient(containerName);
 
-            // Add authorized email addresses here
-            const accountEmails = [
-                "authorized.email@example.com",
-                "another.authorized.email@example.com",
-            ];
 
             let selectedBlobName = null;
 
@@ -280,13 +251,19 @@
                 }
             }
 
+
             async function uploadImage(file) {
                 const blobName = "images/" + new Date().getTime() + "_" + file.name;
                 const blockBlobClient = containerClient.getBlockBlobClient(blobName);
                 await blockBlobClient.uploadData(file, {
                     sasToken: sasToken,
                 });
-                listAndDisplayImages(); // Refresh the image list after uploading
+                // Refresh the image list after uploading
+                listAndDisplayImages();
+                // Update Azure container with new image
+                const response = await fetch(`/api/UpdateContainer?blobName=${blobName}`);
+                const data = await response.json();
+                console.log(data);
             }
 
             async function deleteSelectedImage() {
@@ -295,14 +272,20 @@
                     alert("No image selected for deletion");
                     return;
                 }
-
                 const blobClient = containerClient.getBlobClient(blobName);
                 await blobClient.delete({
                     sasToken: sasToken,
                 });
-                setSelectedBlobName(null); // Reset selected blob name after deletion
-                listAndDisplayImages(); // Refresh the image list after deletion
+                // Reset selected blob name after deletion
+                setSelectedBlobName(null);
+                // Refresh the image list after deletion
+                listAndDisplayImages();
+                // Update Azure container with deleted image
+                const response = await fetch(`/api/DeleteFromContainer?blobName=${blobName}`);
+                const data = await response.json();
+                console.log(data);
             }
+
 
             document.getElementById("image-upload").addEventListener("change", function (e) {
                 const file = e.target.files[0];
@@ -318,17 +301,6 @@
             deleteImageBtn.addEventListener("click", deleteSelectedImage);
             document.querySelector(".column.large-7.medium-full > p").appendChild(deleteImageBtn);
 
-            // Check if the user is authorized to delete images
-            msalInstance.addEventCallback((message, instance) => {
-                if (message.eventType === msal.EventType.LOGIN_SUCCESS) {
-                    const account = instance.getAllAccounts()[0];
-                    if (accountEmails.includes(account.username)) {
-                        deleteImageBtn.style.display = "inline-block";
-                    } else {
-                        deleteImageBtn.style.display = "none";
-                    }
-                }
-            });
 
             listAndDisplayImages();
         });
@@ -336,14 +308,3 @@
 
 
 </body>
-
-
-
-
-using only html css and js , update the below website page with the following features
-
-1. add a login button to the page and if the user email is in our list of emails then he can upload and delete images
-however if the user email is not in our list of emails then he can only view the images
-2. the update and delete button should only be visible to the user who have the email in our list of emails
-3. and the upload images and the delete images need to be reflected in the gallery page and update the Azure storage
-account with the new images and delete the images from the Azure storage account
