@@ -141,7 +141,8 @@
                 <div class="row">
                     <div class="column large-7 medium-full">
                         <p>
-                            <button id="signInBtn">Sign In</button>
+                            <input type="email" id="email-input" placeholder="Enter your email" />
+                            <button id="verify-email-btn">Verify Email</button>
                         </p>
                         <div id="images-container"></div>
                         <input type="file" id="image-upload" style="display: none" />
@@ -212,12 +213,29 @@
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
             function signIn() {
-                console.log("signIn called");
-                const loginRequest = {
-                    scopes: ['User.Read'],
-                };
-                msalInstance.loginRedirect(loginRequest);
+                const email = document.getElementById("email-input").value;
+                if (accountEmails.includes(email)) {
+                    console.log("signIn called");
+                    const loginRequest = {
+                        scopes: ['User.Read'],
+                        loginHint: email,
+                    };
+                    msalInstance.loginRedirect(loginRequest);
+                } else {
+                    alert("You do not have access to upload and delete images.");
+                }
             }
+
+            document.getElementById("signInBtn").disabled = true;
+            document.getElementById("verify-email-btn").addEventListener("click", function () {
+                const email = document.getElementById("email-input").value;
+                if (accountEmails.includes(email)) {
+                    document.getElementById("signInBtn").disabled = false;
+                } else {
+                    alert("You do not have access to upload and delete images.");
+                }
+            });
+
 
             document.getElementById("signInBtn").addEventListener("click", signIn);
 
