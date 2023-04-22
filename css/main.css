@@ -1814,6 +1814,8 @@ input::-moz-focus-inner {
   left: 8rem;
   top: 50%;
   opacity: 0.6;
+  height: 14rem;
+  width: 14rem;
 
 }
 
