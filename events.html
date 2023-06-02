@@ -105,12 +105,17 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script>
         gapi.load('client', function() {
+            // 977276758630-jiimu3750ivl1ltam4t4bm72iavn99gj.apps.googleusercontent.com
+
+            // AIzaSyD-3w43_YDOeryGeOs6Fv9IGslH6I7Fbpc
             gapi.client.init({
-                apiKey: 'AIzaSyCBuLBBq_dvcyjV6GDQD4eZVlFgnzbgS_s',
+                // apiKey: 'AIzaSyCBuLBBq_dvcyjV6GDQD4eZVlFgnzbgS_s',
+                apiKey: 'AIzaSyD-3w43_YDOeryGeOs6Fv9IGslH6I7Fbpc',
+
                 discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
             }).then(function() {
                 return gapi.client.calendar.events.list({
-                    'calendarId': 'temu893@gmail.com',
+                    'calendarId': 'ouraelminn@gmail.com',
                     'timeMin': new Date().toISOString(),
                     'showDeleted': false,
                     'singleEvents': true,
