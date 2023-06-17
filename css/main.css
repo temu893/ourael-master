@@ -1802,7 +1802,10 @@ input::-moz-focus-inner {
 /* -------------------------------------------------------------------
  * ## header logo
  * ------------------------------------------------------------------- */
-.header-logo {
+/* -------------------------------------------------------------------
+ * ## header logo
+ * ------------------------------------------------------------------- */
+ .header-logo {
   z-index: 102;
   display: inline-block;
   margin: 0;
@@ -1816,7 +1819,6 @@ input::-moz-focus-inner {
   opacity: 0.7;
   height: 12rem;
   width: 19rem;
-
 }
 
 .header-logo::before {
@@ -1838,10 +1840,29 @@ input::-moz-focus-inner {
 }
 
 .header-logo img {
-  width: 600px;
-  height: 200px;
-  
+  width: 100%; /* Changed width to 100% so that the image will scale with the size of the .header-logo container */
+  height: auto; /* Changed height to auto to maintain aspect ratio of the image as it scales */
 }
+
+/* Media query for devices with max-width of 768px */
+@media screen and (max-width: 768px) {
+  .header-logo {
+    left: 2rem; /* adjust the position as needed */
+    top: 30%; /* adjust the position as needed */
+    height: 6rem; /* adjust the size as needed */
+    width: 10rem; /* adjust the size as needed */
+  }
+
+  .header-logo::before {
+    width: 5rem; /* adjust the size as needed */
+    left: -6rem; /* adjust the position as needed */
+  }
+
+  .header-logo img {
+    max-width: 100%; /* the image will scale down if it has to, but never scale up to be larger than its original size */
+  }
+}
+
 
 /* -------------------------------------------------------------------
  * ## main navigation
