@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "ourael-master",
+    "public": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
