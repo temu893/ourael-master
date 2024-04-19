@@ -7,6 +7,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting --project StOurael
+        args: deploy --only hosting --project stourael
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_ST_OURAEL }}
