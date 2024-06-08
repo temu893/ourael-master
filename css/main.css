@@ -3448,54 +3448,60 @@ html.no-csstransitions .hero-content {
  * ------------------------------------------------------------------- */
 
 /* church staff
+margin-top: 6rem;
  * ----------------------------------------------- */
-.church-staff {
-  margin-top: 6rem;
+ .church-staff {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 1rem;
 }
 
 .church-staff__item {
   margin-bottom: 1.6rem;
+  flex: 1 1 300px; /* Flex items have a min-width of 300px */
+  max-width: 400px; /* Max-width for each item */
+  text-align: center; /* Center aligns the text */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
 }
 
 .church-staff__header {
-  margin-bottom: 1.6rem;
-  padding-top: 1.6rem;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+  margin-bottom: 1.2rem;
+  padding-top: 1.2rem;
   display: flex;
-  -webkit-flex-flow: row nowrap;
-  -ms-flex-flow: row nowrap;
-  flex-flow: row nowrap;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
+  flex-direction: column; /* Stack name and position */
+  align-items: center; /* Align items centrally for aesthetics */
 }
 
 .church-staff__name {
-  margin-top: 0;
-  font-weight: 700;
+  margin-top: 0.1rem;
+  font-weight: 500;
+  color: #333; /* Dark grey for better readability */
 }
 
 .church-staff__position {
-  display: block;
   font-family: "Open Sans", sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.7rem; /* Slightly smaller font-size for subtlety */
   font-weight: 400;
-  margin-top: .6rem;
+  color: #666; /* Light grey for contrast */
+  margin-top: 0.1rem; /* Reduced spacing */
 }
 
 .church-staff__picture {
-  -webkit-flex: 0 0 8rem;
-  -ms-flex: 0 0 8rem;
-  flex: 0 0 8rem;
-  max-width: 8rem;
-  margin-right: 2rem;
+  width: 500px; /* Fixed width for each picture container */
+  height: 500px; /* Fixed height for each picture container */
+  margin: 1rem; /* Adds margin around each image */
+  border-radius: 8px; /* Rounds the corners of the images */
+  overflow: hidden; /* Ensures no overflow from border-radius */
+  box-shadow: 2 30px 30px rgba(0,0,0,0.1); /* Adds subtle shadow for depth */
 }
 
 .church-staff__picture img {
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
+  width: 100%; /* Ensures the image fills the container */
+  height: 100%; /* Ensures the image covers the fixed height fully */
+  object-fit: cover; /* Ensures the image covers the space without distorting */
+  display: block; /* Removes bottom space/margin */
 }
 
 /* ------------------------------------------------------------------- 
