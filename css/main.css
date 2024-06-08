@@ -3459,8 +3459,8 @@ margin-top: 6rem;
 
 .church-staff__item {
   margin-bottom: 1.6rem;
-  flex: 1 1 300px; /* Flex items have a min-width of 300px */
-  max-width: 400px; /* Max-width for each item */
+  flex: 0 0 22%; /* Adjust this to control the number of items per row */
+  max-width: 300px; /* Maximum width for each item */
   text-align: center; /* Center aligns the text */
   display: flex;
   flex-direction: column; /* Stack elements vertically */
@@ -3468,7 +3468,7 @@ margin-top: 6rem;
 
 .church-staff__header {
   margin-bottom: 1.2rem;
-  padding-top: 1.2rem;
+  padding-top: 1.6rem;
   display: flex;
   flex-direction: column; /* Stack name and position */
   align-items: center; /* Align items centrally for aesthetics */
@@ -3489,20 +3489,24 @@ margin-top: 6rem;
 }
 
 .church-staff__picture {
-  width: 500px; /* Fixed width for each picture container */
-  height: 500px; /* Fixed height for each picture container */
-  margin: 1rem; /* Adds margin around each image */
-  border-radius: 8px; /* Rounds the corners of the images */
+  width: 100%; /* Full width of the container */
+  padding-top: 100%; /* Aspect ratio 1:1, creates a square based on the width */
+  position: relative; /* Allows absolute positioning within */
   overflow: hidden; /* Ensures no overflow from border-radius */
-  box-shadow: 2 30px 30px rgba(0,0,0,0.1); /* Adds subtle shadow for depth */
+  border-radius: 8px; /* Rounds the corners of the images */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds subtle shadow for depth */
 }
 
 .church-staff__picture img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%; /* Ensures the image fills the container */
-  height: 100%; /* Ensures the image covers the fixed height fully */
+  height: 100%; /* Ensures the image covers the container fully */
   object-fit: cover; /* Ensures the image covers the space without distorting */
-  display: block; /* Removes bottom space/margin */
 }
+
+
 
 /* ------------------------------------------------------------------- 
  * ## event page 
@@ -3613,19 +3617,17 @@ margin-top: 6rem;
   }
 
   .church-staff__item {
-    flex: 0 0 100%; /* Each item takes full width */
-    max-width: 100%; /* Maximum width of 100% */
+    flex: 0 0 90%; /* Adjust this to have larger images on mobile */
+    max-width: 90%; /* Maximum width of 90% */
+  }
+
+  .church-staff__picture {
+    padding-top: 90%; /* Keeps the images larger and visible */
   }
 
   .church-staff__name, .church-staff__position {
     font-size: 1.5rem; /* Adjust font size for smaller screens */
   }
-}
-@media screen and (max-width:400px) {
-  .page-header h1 {
-    font-size: 4.2rem;
-  }
-
 }
 
 iframe {
